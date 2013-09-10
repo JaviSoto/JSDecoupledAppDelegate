@@ -11,70 +11,70 @@
 
 static NSSet *_JSSelectorsInProtocol(Protocol *protocol, BOOL required)
 {
-    unsigned int count;
-    struct objc_method_description *methods = protocol_copyMethodDescriptionList(protocol, required, YES, &count);
+    NSUInteger methodCount;
+    struct objc_method_description *methods = protocol_copyMethodDescriptionList(protocol, required, YES, &methodCount);
 
-    NSMutableSet *list = [NSMutableSet setWithCapacity:count];
-    for (unsigned i = 0; i < count; i++)
+    NSMutableSet *selectorsInProtocol = [NSMutableSet setWithCapacity:methodCount];
+    for (NSUInteger i = 0; i < methodCount; i++)
     {
-        [list addObject:NSStringFromSelector(methods[i].name)];
+        [selectorsInProtocol addObject:NSStringFromSelector(methods[i].name)];
     }
 
     free(methods);
 
-    return list;
+    return selectorsInProtocol;
 }
 
 static NSSet *JSSelectorListInProtocol(Protocol *protocol)
 {
-    NSMutableSet *list = [NSMutableSet set];
+    NSMutableSet *selectors = [NSMutableSet set];
 
-    [list unionSet:_JSSelectorsInProtocol(protocol, YES)];
-    [list unionSet:_JSSelectorsInProtocol(protocol, NO)];
+    [selectors unionSet:_JSSelectorsInProtocol(protocol, YES)];
+    [selectors unionSet:_JSSelectorsInProtocol(protocol, NO)];
 
-    return list;
+    return selectors;
 }
 
 static NSArray *JSApplicationDelegateProperties()
 {
-    static NSArray *propertiesArray = nil;
+    static NSArray *properties = nil;
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        propertiesArray = @[
-                            NSStringFromSelector(@selector(appStateDelegate)),
-                            NSStringFromSelector(@selector(appDefaultOrientationDelegate)),
-                            NSStringFromSelector(@selector(backgroundFetchDelegate)),
-                            NSStringFromSelector(@selector(remoteNotificationsDelegate)),
-                            NSStringFromSelector(@selector(localNotificationsDelegate)),
-                            NSStringFromSelector(@selector(stateRestorationDelegate)),
-                            NSStringFromSelector(@selector(URLResouceOpeningDelegate)),
-                            NSStringFromSelector(@selector(protectedDataDelegate)),
-                          ];
+        properties = @[
+                       NSStringFromSelector(@selector(appStateDelegate)),
+                       NSStringFromSelector(@selector(appDefaultOrientationDelegate)),
+                       NSStringFromSelector(@selector(backgroundFetchDelegate)),
+                       NSStringFromSelector(@selector(remoteNotificationsDelegate)),
+                       NSStringFromSelector(@selector(localNotificationsDelegate)),
+                       NSStringFromSelector(@selector(stateRestorationDelegate)),
+                       NSStringFromSelector(@selector(URLResouceOpeningDelegate)),
+                       NSStringFromSelector(@selector(protectedDataDelegate)),
+                       ];
     });
 
-    return propertiesArray;
+    return properties;
 }
 
-static NSArray *JSApplicationSubprotocolArray()
+static NSArray *JSApplicationDelegateSubprotocols()
 {
-    static NSArray *protocolArray = nil;
+    static NSArray *protocols = nil;
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        protocolArray = @[
-                          NSStringFromProtocol(@protocol(JSApplicationStateDelegate)),
-                          NSStringFromProtocol(@protocol(JSApplicationDefaultOrientationDelegate)),
-                          NSStringFromProtocol(@protocol(JSApplicationBackgroundFetchDelegate)),
-                          NSStringFromProtocol(@protocol(JSApplicationRemoteNotificationsDelegate)),
-                          NSStringFromProtocol(@protocol(JSApplicationLocalNotificationsDelegate)),
-                          NSStringFromProtocol(@protocol(JSApplicationStateRestorationDelegate)),
-                          NSStringFromProtocol(@protocol(JSApplicationURLResourceOpeningDelegate)),
-                          NSStringFromProtocol(@protocol(JSApplicationProtectedDataDelegate))
-                          ];
+        protocols = @[
+                      NSStringFromProtocol(@protocol(JSApplicationStateDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationDefaultOrientationDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationBackgroundFetchDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationRemoteNotificationsDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationLocalNotificationsDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationStateRestorationDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationURLResourceOpeningDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationProtectedDataDelegate))
+                      ];
     });
 
-    return protocolArray;
+    return protocols;
 }
 
 @implementation JSDecoupledAppDelegate
@@ -89,15 +89,16 @@ static NSArray *JSApplicationSubprotocolArray()
     __block BOOL protocolFound = NO;
     __block BOOL delegateRespondsToSelector = NO;
 
-    [JSApplicationSubprotocolArray() enumerateObjectsUsingBlock:^(NSString *protocolName, NSUInteger idx, BOOL *stop) {
+    [JSApplicationDelegateSubprotocols() enumerateObjectsUsingBlock:^(NSString *protocolName, NSUInteger idx, BOOL *stop) {
         NSSet *protocolMethods = JSSelectorListInProtocol(NSProtocolFromString(protocolName));
 
         const BOOL methodCorrespondsToThisProtocol = [protocolMethods containsObject:NSStringFromSelector(aSelector)];
-        
+
         if (methodCorrespondsToThisProtocol)
         {
             protocolFound = YES;
 
+            // 2. Get the property for that protocol
             id delegateObjectForProtocol = [self valueForKey:delegateProperties[idx]];
 
             delegateRespondsToSelector = [delegateObjectForProtocol respondsToSelector:aSelector];
@@ -108,12 +109,44 @@ static NSArray *JSApplicationSubprotocolArray()
 
     if (protocolFound)
     {
+        // 3. Return whether that delegate responds to this method
         return delegateRespondsToSelector;
     }
     else
     {
-        // 3. Doesn't correspond to any? Then just return whether we respond to it:
+        // 4. Doesn't correspond to any? Then just return whether we respond to it:
         return [super respondsToSelector:aSelector];
+    }
+}
+
+#pragma mark - Singleton
+
+static JSDecoupledAppDelegate *sharedAppDelegate = nil;
+
++ (void)initialize
+{
+    if (self == [JSDecoupledAppDelegate class])
+    {
+        sharedAppDelegate = [[self alloc] init];
+    }
+}
+
++ (JSDecoupledAppDelegate *)sharedAppDelegate
+{
+    return sharedAppDelegate;
+}
+
+- (id)init
+{
+    if (sharedAppDelegate)
+    {
+        self = nil;
+
+        return sharedAppDelegate;
+    }
+    else
+    {
+        return [super init];
     }
 }
 
@@ -121,6 +154,7 @@ static NSArray *JSApplicationSubprotocolArray()
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Required
     NSParameterAssert(self.appStateDelegate);
 
     return [self.appStateDelegate application:application willFinishLaunchingWithOptions:launchOptions];

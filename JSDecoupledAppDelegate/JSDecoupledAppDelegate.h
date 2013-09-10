@@ -18,19 +18,26 @@
 
 @interface JSDecoupledAppDelegate : UIResponder <UIApplicationDelegate>
 
+/**
+ * This returns the unique instance of the app delegate.
+ * @discussion you must use this method from the `+load` method of your delegate classes if you want to set the delegate property before the app is initialized.
+ * This ensures that your delegate is set up and ready to be queried before `UIApplication` starts asking questions.
+ */
++ (JSDecoupledAppDelegate *)sharedAppDelegate;
+
 @property (strong, nonatomic) UIWindow *window;
 
 // Required
-@property (weak, nonatomic) id<JSApplicationStateDelegate> appStateDelegate;
+@property (strong, nonatomic) id<JSApplicationStateDelegate> appStateDelegate;
 
 // Optional
-@property (weak, nonatomic) id<JSApplicationDefaultOrientationDelegate> appDefaultOrientationDelegate;
-@property (weak, nonatomic) id<JSApplicationBackgroundFetchDelegate> backgroundFetchDelegate;
-@property (weak, nonatomic) id<JSApplicationRemoteNotificationsDelegate> remoteNotificationsDelegate;
-@property (weak, nonatomic) id<JSApplicationLocalNotificationsDelegate> localNotificationsDelegate;
-@property (weak, nonatomic) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
-@property (weak, nonatomic) id<JSApplicationURLResourceOpeningDelegate> URLResouceOpeningDelegate;
-@property (weak, nonatomic) id<JSApplicationProtectedDataDelegate> protectedDataDelegate;
+@property (strong, nonatomic) id<JSApplicationDefaultOrientationDelegate> appDefaultOrientationDelegate;
+@property (strong, nonatomic) id<JSApplicationBackgroundFetchDelegate> backgroundFetchDelegate;
+@property (strong, nonatomic) id<JSApplicationRemoteNotificationsDelegate> remoteNotificationsDelegate;
+@property (strong, nonatomic) id<JSApplicationLocalNotificationsDelegate> localNotificationsDelegate;
+@property (strong, nonatomic) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
+@property (strong, nonatomic) id<JSApplicationURLResourceOpeningDelegate> URLResouceOpeningDelegate;
+@property (strong, nonatomic) id<JSApplicationProtectedDataDelegate> protectedDataDelegate;
 
 @end
 
