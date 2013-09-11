@@ -71,6 +71,7 @@
 
 @protocol JSApplicationRemoteNotificationsDelegate <NSObject>
 
+@optional
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
 
@@ -87,6 +88,7 @@
 
 @protocol JSApplicationStateRestorationDelegate <NSObject>
 
+@optional
 - (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder;
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder;
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder;
@@ -103,6 +105,7 @@
 
 @protocol JSApplicationProtectedDataDelegate <NSObject>
 
+@optional
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application;
 - (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application;
 
