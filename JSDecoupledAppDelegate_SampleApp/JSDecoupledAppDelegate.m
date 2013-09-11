@@ -154,9 +154,6 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Required
-    NSParameterAssert(self.appStateDelegate);
-
     return [self.appStateDelegate application:application willFinishLaunchingWithOptions:launchOptions];
 }
 

@@ -27,10 +27,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-// Required
 @property (strong, nonatomic) id<JSApplicationStateDelegate> appStateDelegate;
-
-// Optional
 @property (strong, nonatomic) id<JSApplicationDefaultOrientationDelegate> appDefaultOrientationDelegate;
 @property (strong, nonatomic) id<JSApplicationBackgroundFetchDelegate> backgroundFetchDelegate;
 @property (strong, nonatomic) id<JSApplicationRemoteNotificationsDelegate> remoteNotificationsDelegate;
