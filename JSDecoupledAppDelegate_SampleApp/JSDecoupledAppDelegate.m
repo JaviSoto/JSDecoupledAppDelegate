@@ -201,10 +201,14 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationBackgroundFetchDelegate
 
+#if JSIOS7SDK
+
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
 {
     [self.backgroundFetchDelegate application:application performFetchWithCompletionHandler:completionHandler];
 }
+
+#endif
 
 #pragma mark - JSApplicationRemoteNotificationsDelegate
 
@@ -223,10 +227,14 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo];
 }
 
+#if JSIOS7SDK
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
 {
     [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
+
+#endif
 
 #pragma mark - JSApplicationLocalNotificationsDelegate
 

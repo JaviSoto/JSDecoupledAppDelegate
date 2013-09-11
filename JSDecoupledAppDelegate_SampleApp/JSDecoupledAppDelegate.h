@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0)
+
 @protocol JSApplicationStateDelegate;
 @protocol JSApplicationDefaultOrientationDelegate;
 @protocol JSApplicationBackgroundFetchDelegate;
@@ -65,7 +67,11 @@
 
 @protocol JSApplicationBackgroundFetchDelegate <NSObject>
 
+#if JSIOS7SDK
+
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
+
+#endif
 
 @end
 
@@ -76,7 +82,10 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
+
+#if JSIOS7SDK
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
+#endif
 
 @end
 
