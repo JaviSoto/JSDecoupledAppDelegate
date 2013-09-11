@@ -1,7 +1,7 @@
 JSDecoupledAppDelegate
 ======================
 
-Implementation of `UIApplicationDelegate` that allows you to implement the different responsibilities of it in different classes making them more reusable.
+`UIApplicationDelegate` class that separates the different responsibilities into more more reusable classes.
 
 ### Motivation
 `UIApplicationDelegate` is perhaps the most convoluted protocol in UIKit. A class that conforms to it won't have one single responsibility, hence it violates one of the most important OOP principles: the **Single Responsibility Principle** ([SRP](http://en.wikipedia.org/wiki/Single_responsibility_principle))
