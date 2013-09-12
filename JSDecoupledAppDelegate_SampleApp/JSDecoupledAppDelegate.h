@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0)
+#define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 70000)
 
 @protocol JSApplicationStateDelegate;
 @protocol JSApplicationDefaultOrientationDelegate;
