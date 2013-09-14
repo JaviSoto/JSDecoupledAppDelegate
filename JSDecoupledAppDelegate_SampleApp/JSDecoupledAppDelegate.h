@@ -7,11 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 70000)
-
 @protocol JSApplicationStateDelegate;
 @protocol JSApplicationDefaultOrientationDelegate;
-@protocol JSApplicationBackgroundFetchDelegate;
 @protocol JSApplicationRemoteNotificationsDelegate;
 @protocol JSApplicationLocalNotificationsDelegate;
 @protocol JSApplicationStateRestorationDelegate;
@@ -31,7 +28,6 @@
 
 @property (strong, nonatomic) id<JSApplicationStateDelegate> appStateDelegate;
 @property (strong, nonatomic) id<JSApplicationDefaultOrientationDelegate> appDefaultOrientationDelegate;
-@property (strong, nonatomic) id<JSApplicationBackgroundFetchDelegate> backgroundFetchDelegate;
 @property (strong, nonatomic) id<JSApplicationRemoteNotificationsDelegate> remoteNotificationsDelegate;
 @property (strong, nonatomic) id<JSApplicationLocalNotificationsDelegate> localNotificationsDelegate;
 @property (strong, nonatomic) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
@@ -65,16 +61,6 @@
 
 @end
 
-@protocol JSApplicationBackgroundFetchDelegate <NSObject>
-
-#if JSIOS7SDK
-
-- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
-
-#endif
-
-@end
-
 @protocol JSApplicationRemoteNotificationsDelegate <NSObject>
 
 @optional
@@ -82,10 +68,6 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
-
-#if JSIOS7SDK
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
-#endif
 
 @end
 
