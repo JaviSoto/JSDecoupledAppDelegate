@@ -44,6 +44,7 @@ static NSArray *JSApplicationDelegateProperties()
         properties = @[
                        NSStringFromSelector(@selector(appStateDelegate)),
                        NSStringFromSelector(@selector(appDefaultOrientationDelegate)),
+                       NSStringFromSelector(@selector(backgroundFetchDelegate)),
                        NSStringFromSelector(@selector(remoteNotificationsDelegate)),
                        NSStringFromSelector(@selector(localNotificationsDelegate)),
                        NSStringFromSelector(@selector(stateRestorationDelegate)),
@@ -64,6 +65,7 @@ static NSArray *JSApplicationDelegateSubprotocols()
         protocols = @[
                       NSStringFromProtocol(@protocol(JSApplicationStateDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationDefaultOrientationDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationBackgroundFetchDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationRemoteNotificationsDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationLocalNotificationsDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationStateRestorationDelegate)),
@@ -197,6 +199,17 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     return [self.appDefaultOrientationDelegate application:application supportedInterfaceOrientationsForWindow:window];
 }
 
+#pragma mark - JSApplicationBackgroundFetchDelegate
+
+#if JSIOS7SDK
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
+    [self.backgroundFetchDelegate application:application performFetchWithCompletionHandler:completionHandler];
+}
+
+#endif
+
 #pragma mark - JSApplicationRemoteNotificationsDelegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -213,6 +226,15 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 {
     [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo];
 }
+
+#if JSIOS7SDK
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
+    [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
+#endif
 
 #pragma mark - JSApplicationLocalNotificationsDelegate
 
