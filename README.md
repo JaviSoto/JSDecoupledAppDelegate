@@ -61,7 +61,7 @@ For more details on this, check the Sample Application in this repo.
 Just add this line to your `Podfile`:
 
 ```
-pod 'JSDecoupledAppDelegate', '~> 1.0'
+pod 'JSDecoupledAppDelegate', '~> 1.0.0'
 ```
 
 - Manually:
