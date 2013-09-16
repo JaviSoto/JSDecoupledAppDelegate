@@ -44,7 +44,6 @@ static NSArray *JSApplicationDelegateProperties()
         properties = @[
                        NSStringFromSelector(@selector(appStateDelegate)),
                        NSStringFromSelector(@selector(appDefaultOrientationDelegate)),
-                       NSStringFromSelector(@selector(backgroundFetchDelegate)),
                        NSStringFromSelector(@selector(remoteNotificationsDelegate)),
                        NSStringFromSelector(@selector(localNotificationsDelegate)),
                        NSStringFromSelector(@selector(stateRestorationDelegate)),
@@ -65,7 +64,6 @@ static NSArray *JSApplicationDelegateSubprotocols()
         protocols = @[
                       NSStringFromProtocol(@protocol(JSApplicationStateDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationDefaultOrientationDelegate)),
-                      NSStringFromProtocol(@protocol(JSApplicationBackgroundFetchDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationRemoteNotificationsDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationLocalNotificationsDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationStateRestorationDelegate)),
@@ -154,9 +152,6 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Required
-    NSParameterAssert(self.appStateDelegate);
-
     return [self.appStateDelegate application:application willFinishLaunchingWithOptions:launchOptions];
 }
 
@@ -202,13 +197,6 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     return [self.appDefaultOrientationDelegate application:application supportedInterfaceOrientationsForWindow:window];
 }
 
-#pragma mark - JSApplicationBackgroundFetchDelegate
-
-- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
-{
-    [self.backgroundFetchDelegate application:application performFetchWithCompletionHandler:completionHandler];
-}
-
 #pragma mark - JSApplicationRemoteNotificationsDelegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -224,11 +212,6 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
-{
-    [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
 
 #pragma mark - JSApplicationLocalNotificationsDelegate
