@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D054E97617E7A356007D9673 /* JSDecoupledAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D054E97517E7A356007D9673 /* JSDecoupledAppDelegate.m */; };
 		D0C415E217DEDA75003F9C6E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C415E117DEDA75003F9C6E /* Foundation.framework */; };
 		D0C415E417DEDA75003F9C6E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C415E317DEDA75003F9C6E /* CoreGraphics.framework */; };
 		D0C415E617DEDA75003F9C6E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C415E517DEDA75003F9C6E /* UIKit.framework */; };
@@ -19,7 +20,6 @@
 		D0C4160517DEDA75003F9C6E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0C4160317DEDA75003F9C6E /* InfoPlist.strings */; };
 		D0C4160717DEDA75003F9C6E /* JSDecoupledAppDelegate_SampleAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C4160617DEDA75003F9C6E /* JSDecoupledAppDelegate_SampleAppTests.m */; };
 		D0FE1E2517DEE6B70085A37B /* JSApplicationStateDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FE1E2417DEE6B70085A37B /* JSApplicationStateDelegate.m */; };
-		D0FE1E2B17DEF09C0085A37B /* JSDecoupledAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FE1E2A17DEF09C0085A37B /* JSDecoupledAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D054E97417E7A356007D9673 /* JSDecoupledAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSDecoupledAppDelegate.h; path = JSDecoupledAppDelegate/JSDecoupledAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		D054E97517E7A356007D9673 /* JSDecoupledAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSDecoupledAppDelegate.m; path = JSDecoupledAppDelegate/JSDecoupledAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		D0C415DE17DEDA75003F9C6E /* JSDecoupledAppDelegate_SampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSDecoupledAppDelegate_SampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0C415E117DEDA75003F9C6E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D0C415E317DEDA75003F9C6E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -49,8 +51,6 @@
 		D0C4160617DEDA75003F9C6E /* JSDecoupledAppDelegate_SampleAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSDecoupledAppDelegate_SampleAppTests.m; sourceTree = "<group>"; };
 		D0FE1E2317DEE6B70085A37B /* JSApplicationStateDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSApplicationStateDelegate.h; sourceTree = "<group>"; };
 		D0FE1E2417DEE6B70085A37B /* JSApplicationStateDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSApplicationStateDelegate.m; sourceTree = "<group>"; };
-		D0FE1E2917DEF09C0085A37B /* JSDecoupledAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSDecoupledAppDelegate.h; sourceTree = "<group>"; };
-		D0FE1E2A17DEF09C0085A37B /* JSDecoupledAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSDecoupledAppDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,8 +110,8 @@
 		D0C415E717DEDA75003F9C6E /* JSDecoupledAppDelegate_SampleApp */ = {
 			isa = PBXGroup;
 			children = (
-				D0FE1E2917DEF09C0085A37B /* JSDecoupledAppDelegate.h */,
-				D0FE1E2A17DEF09C0085A37B /* JSDecoupledAppDelegate.m */,
+				D054E97417E7A356007D9673 /* JSDecoupledAppDelegate.h */,
+				D054E97517E7A356007D9673 /* JSDecoupledAppDelegate.m */,
 				D0C415F317DEDA75003F9C6E /* Images.xcassets */,
 				D0C415E817DEDA75003F9C6E /* Supporting Files */,
 				D0FE1E2317DEE6B70085A37B /* JSApplicationStateDelegate.h */,
@@ -245,7 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0FE1E2B17DEF09C0085A37B /* JSDecoupledAppDelegate.m in Sources */,
+				D054E97617E7A356007D9673 /* JSDecoupledAppDelegate.m in Sources */,
 				D0C415EE17DEDA75003F9C6E /* main.m in Sources */,
 				D0FE1E2517DEE6B70085A37B /* JSApplicationStateDelegate.m in Sources */,
 			);
