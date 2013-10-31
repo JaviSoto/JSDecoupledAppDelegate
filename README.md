@@ -73,3 +73,7 @@ Simply add the files `JSDecoupledAppDelegate.h` and `JSDecoupledAppDelegate.m` t
 
 ### License
 `JSDecoupledAppDelegate` is available under the MIT license. See the LICENSE file for more info.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/JaviSoto/jsdecoupledappdelegate/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
