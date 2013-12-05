@@ -48,7 +48,7 @@ static NSArray *JSApplicationDelegateProperties()
                        NSStringFromSelector(@selector(remoteNotificationsDelegate)),
                        NSStringFromSelector(@selector(localNotificationsDelegate)),
                        NSStringFromSelector(@selector(stateRestorationDelegate)),
-                       NSStringFromSelector(@selector(URLResouceOpeningDelegate)),
+                       NSStringFromSelector(@selector(URLResourceOpeningDelegate)),
                        NSStringFromSelector(@selector(protectedDataDelegate)),
                        ];
     });
@@ -270,7 +270,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return [self.URLResouceOpeningDelegate application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+    return [self.URLResourceOpeningDelegate application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
 }
 
 #pragma mark - JSApplicationProtectedDataDelegate
