@@ -35,7 +35,7 @@
 @property (strong, nonatomic) id<JSApplicationRemoteNotificationsDelegate> remoteNotificationsDelegate;
 @property (strong, nonatomic) id<JSApplicationLocalNotificationsDelegate> localNotificationsDelegate;
 @property (strong, nonatomic) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
-@property (strong, nonatomic) id<JSApplicationURLResourceOpeningDelegate> URLResouceOpeningDelegate;
+@property (strong, nonatomic) id<JSApplicationURLResourceOpeningDelegate> URLResourceOpeningDelegate;
 @property (strong, nonatomic) id<JSApplicationProtectedDataDelegate> protectedDataDelegate;
 
 @end
