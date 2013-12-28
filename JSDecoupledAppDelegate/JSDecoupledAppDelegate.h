@@ -18,6 +18,9 @@
 @protocol JSApplicationURLResourceOpeningDelegate;
 @protocol JSApplicationProtectedDataDelegate;
 
+/// Name for all implementation errors regarding the plist-based configuration of this class.
+extern NSString * const JSInvalidConfigurationException;
+
 @interface JSDecoupledAppDelegate : UIResponder <UIApplicationDelegate>
 
 /**

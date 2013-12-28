@@ -298,8 +298,9 @@ static id NewDelegateForProtocolFromDictionary(Protocol *protocol, NSDictionary 
 
 	Class delegateClass = NSClassFromString(className);
 	if (!class_conformsToProtocol(delegateClass, protocol))
-		[NSException raise:NSInternalInconsistencyException format:@"Delegate class named “%@” does not conform to protocol %@!", delegateClass, protocolName];
+		[NSException raise:JSInvalidConfigurationException format:@"Delegate class named “%@” does not conform to protocol %@!", delegateClass, protocolName];
 
 	return [delegateClass new];
 }
 
+NSString * const JSInvalidConfigurationException = @"JSInvalidConfigurationException";
