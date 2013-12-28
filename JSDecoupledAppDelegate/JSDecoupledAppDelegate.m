@@ -77,6 +77,8 @@ static NSArray *JSApplicationDelegateSubprotocols()
     return protocols;
 }
 
+static id NewDelegateForProtocolFromDictionary(Protocol *protocol, NSDictionary *dictionary) NS_RETURNS_RETAINED;
+
 @implementation JSDecoupledAppDelegate
 
 #pragma mark - Method Proxying
@@ -286,3 +288,18 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 }
 
 @end
+
+static id NewDelegateForProtocolFromDictionary(Protocol *protocol, NSDictionary *dictionary)
+{
+	NSString *protocolName = NSStringFromProtocol(protocol);
+	NSString *className = [dictionary objectForKey:protocolName];
+	if (!className)
+		return nil;
+
+	Class delegateClass = NSClassFromString(className);
+	if (!class_conformsToProtocol(delegateClass, protocol))
+		[NSException raise:NSInternalInconsistencyException format:@"Delegate class named “%@” does not conform to protocol %@!", delegateClass, protocolName];
+
+	return [delegateClass new];
+}
+
