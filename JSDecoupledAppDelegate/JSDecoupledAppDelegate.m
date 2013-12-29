@@ -77,6 +77,53 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 		CFRelease(_delegatesBySelector);
 }
 
+#pragma mark - Setters
+
+#define UpdatePropertyAndMapForProtocol(propertyName, protocolName) \
+if (propertyName == _ ##propertyName) return; \
+JSRemoveAllOccurrencesOfObjectFromDictionaryRef(_ ##propertyName, _delegatesBySelector); \
+_ ##propertyName = propertyName; \
+JSAddMethodsFromProtocolImplementedByObjectToDictionaryRef(@protocol(protocolName), propertyName, _delegatesBySelector)
+
+- (void)setAppStateDelegate:(id<JSApplicationStateDelegate>)appStateDelegate
+{
+	UpdatePropertyAndMapForProtocol(appStateDelegate, JSApplicationStateDelegate);
+}
+
+- (void)setAppDefaultOrientationDelegate:(id<JSApplicationDefaultOrientationDelegate>)appDefaultOrientationDelegate
+{
+	UpdatePropertyAndMapForProtocol(appDefaultOrientationDelegate, JSApplicationDefaultOrientationDelegate);
+}
+
+- (void)setBackgroundFetchDelegate:(id<JSApplicationBackgroundFetchDelegate>)backgroundFetchDelegate
+{
+	UpdatePropertyAndMapForProtocol(backgroundFetchDelegate, JSApplicationBackgroundFetchDelegate);
+}
+
+- (void)setRemoteNotificationsDelegate:(id<JSApplicationRemoteNotificationsDelegate>)remoteNotificationsDelegate
+{
+	UpdatePropertyAndMapForProtocol(remoteNotificationsDelegate, JSApplicationRemoteNotificationsDelegate);
+}
+
+- (void)setLocalNotificationsDelegate:(id<JSApplicationLocalNotificationsDelegate>)localNotificationsDelegate
+{
+	UpdatePropertyAndMapForProtocol(localNotificationsDelegate, JSApplicationLocalNotificationsDelegate);
+}
+
+- (void)setStateRestorationDelegate:(id<JSApplicationStateRestorationDelegate>)stateRestorationDelegate
+{
+	UpdatePropertyAndMapForProtocol(stateRestorationDelegate, JSApplicationStateRestorationDelegate);
+}
+
+- (void)setURLResourceOpeningDelegate:(id<JSApplicationURLResourceOpeningDelegate>)URLResourceOpeningDelegate
+{
+	UpdatePropertyAndMapForProtocol(URLResourceOpeningDelegate, JSApplicationURLResourceOpeningDelegate);
+}
+
+- (void)setProtectedDataDelegate:(id<JSApplicationProtectedDataDelegate>)protectedDataDelegate
+{
+	UpdatePropertyAndMapForProtocol(protectedDataDelegate, JSApplicationProtectedDataDelegate);
+}
 
 @end
 
