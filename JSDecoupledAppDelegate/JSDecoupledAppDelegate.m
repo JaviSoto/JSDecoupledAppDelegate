@@ -148,7 +148,16 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     }
     else
     {
-        return [super init];
+		NSString *fileName = @"ApplicationDelegateConfiguration";
+		NSURL *plistURL = [[NSBundle mainBundle] URLForResource:fileName withExtension:@"plist"];
+		if (!plistURL)
+			[NSException raise:JSInvalidConfigurationException format:@"Main bundle must contain a plist named “%@”!", fileName];
+
+		NSDictionary *classNamesByProtocolNames = [NSDictionary dictionaryWithContentsOfURL:plistURL];
+		if (!classNamesByProtocolNames)
+			[NSException raise:JSInvalidConfigurationException format:@"Plist “%@” did not contain a valid configuration dictionary!", fileName];
+
+        return [self initWithDelegateMap:classNamesByProtocolNames];
     }
 }
 

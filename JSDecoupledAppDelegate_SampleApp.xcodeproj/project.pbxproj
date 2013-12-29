@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74C6AA06186FA3350033CBED /* ApplicationDelegateConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 74C6AA05186FA3350033CBED /* ApplicationDelegateConfiguration.plist */; };
 		D054E97617E7A356007D9673 /* JSDecoupledAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D054E97517E7A356007D9673 /* JSDecoupledAppDelegate.m */; };
 		D0C415E217DEDA75003F9C6E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C415E117DEDA75003F9C6E /* Foundation.framework */; };
 		D0C415E417DEDA75003F9C6E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0C415E317DEDA75003F9C6E /* CoreGraphics.framework */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		74C6AA05186FA3350033CBED /* ApplicationDelegateConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ApplicationDelegateConfiguration.plist; sourceTree = "<group>"; };
 		D054E97417E7A356007D9673 /* JSDecoupledAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSDecoupledAppDelegate.h; path = JSDecoupledAppDelegate/JSDecoupledAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		D054E97517E7A356007D9673 /* JSDecoupledAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSDecoupledAppDelegate.m; path = JSDecoupledAppDelegate/JSDecoupledAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		D0C415DE17DEDA75003F9C6E /* JSDecoupledAppDelegate_SampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSDecoupledAppDelegate_SampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +129,7 @@
 				D0C415EA17DEDA75003F9C6E /* InfoPlist.strings */,
 				D0C415ED17DEDA75003F9C6E /* main.m */,
 				D0C415EF17DEDA75003F9C6E /* JSDecoupledAppDelegate_SampleApp-Prefix.pch */,
+				74C6AA05186FA3350033CBED /* ApplicationDelegateConfiguration.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0C415EC17DEDA75003F9C6E /* InfoPlist.strings in Resources */,
+				74C6AA06186FA3350033CBED /* ApplicationDelegateConfiguration.plist in Resources */,
 				D0C415F417DEDA75003F9C6E /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
