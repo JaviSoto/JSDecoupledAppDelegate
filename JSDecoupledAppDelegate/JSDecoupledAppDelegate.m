@@ -152,6 +152,32 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     }
 }
 
+#define _protocolInstance(protocolName) \
+	NewDelegateForProtocolFromDictionary(@protocol(protocolName), classNamesByProtocolNames)
+- (id)initWithDelegateMap:(NSDictionary *)classNamesByProtocolNames
+{
+	NSArray *validKeys = JSApplicationDelegateSubprotocols();
+	[classNamesByProtocolNames enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+		if (![key isKindOfClass:[NSString class]]
+			|| ![value isKindOfClass:[NSString class]])
+			[NSException raise:JSInvalidConfigurationException format:@"The key/value pairs must be pairs of strings! %p, howver contained the pair %@, %@.", classNamesByProtocolNames, key, value];
+
+		if (![validKeys containsObject:key])
+			[NSException raise:JSInvalidConfigurationException format:@"The key “%@” is invalid!\nThe allowed values are: “%@”", key, [validKeys componentsJoinedByString:@"”, “"]];
+	}];
+	if (!(self = [super init])) return nil;
+
+	_appStateDelegate = _protocolInstance(JSApplicationStateDelegate);
+	_appDefaultOrientationDelegate = _protocolInstance(JSApplicationDefaultOrientationDelegate);
+	_backgroundFetchDelegate = _protocolInstance(JSApplicationBackgroundFetchDelegate);
+	_remoteNotificationsDelegate = _protocolInstance(JSApplicationRemoteNotificationsDelegate);
+	_localNotificationsDelegate = _protocolInstance(JSApplicationLocalNotificationsDelegate);
+	_stateRestorationDelegate = _protocolInstance(JSApplicationStateRestorationDelegate);
+	_protectedDataDelegate = _protocolInstance(JSApplicationProtectedDataDelegate);
+
+	return self;
+}
+
 #pragma mark - JSApplicationStateDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
