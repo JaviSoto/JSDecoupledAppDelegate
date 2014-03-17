@@ -11,7 +11,7 @@
 
 static NSSet *_JSSelectorsInProtocol(Protocol *protocol, BOOL required)
 {
-    NSUInteger methodCount;
+    unsigned int methodCount;
     struct objc_method_description *methods = protocol_copyMethodDescriptionList(protocol, required, YES, &methodCount);
 
     NSMutableSet *selectorsInProtocol = [NSMutableSet setWithCapacity:methodCount];
