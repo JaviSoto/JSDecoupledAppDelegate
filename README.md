@@ -56,7 +56,7 @@ For more details on this, check the Sample Application in this repo.
 
 ### Installation
 
-- Using [Cocoapods](http://cocoapods.org/):
+- Using [CocoaPods](http://cocoapods.org/):
 
 Just add this line to your `Podfile`:
 
@@ -69,7 +69,7 @@ pod 'JSDecoupledAppDelegate', '~> 1.0.0'
 Simply add the files `JSDecoupledAppDelegate.h` and `JSDecoupledAppDelegate.m` to your project.
 
 ### Compatibility
-`JSDecoupledAppDelegate` is compatible with iOS 5, iOS 6 and iOS 7.
+`JSDecoupledAppDelegate` is compatible with iOS 5, iOS 6, iOS 7 and iOS 8.
 
 ### License
 `JSDecoupledAppDelegate` is available under the MIT license. See the LICENSE file for more info.

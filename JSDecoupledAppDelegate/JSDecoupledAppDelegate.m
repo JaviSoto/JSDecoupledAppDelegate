@@ -50,6 +50,9 @@ static NSArray *JSApplicationDelegateProperties()
                        NSStringFromSelector(@selector(stateRestorationDelegate)),
                        NSStringFromSelector(@selector(URLResourceOpeningDelegate)),
                        NSStringFromSelector(@selector(protectedDataDelegate)),
+                       NSStringFromSelector(@selector(watchInteractionDelegate)),
+                       NSStringFromSelector(@selector(extensionDelegate)),
+                       NSStringFromSelector(@selector(activityContinuationDelegate)),
                        ];
     });
 
@@ -70,7 +73,10 @@ static NSArray *JSApplicationDelegateSubprotocols()
                       NSStringFromProtocol(@protocol(JSApplicationLocalNotificationsDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationStateRestorationDelegate)),
                       NSStringFromProtocol(@protocol(JSApplicationURLResourceOpeningDelegate)),
-                      NSStringFromProtocol(@protocol(JSApplicationProtectedDataDelegate))
+                      NSStringFromProtocol(@protocol(JSApplicationProtectedDataDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationWatchInteractionDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationExtensionDelegate)),
+                      NSStringFromProtocol(@protocol(JSApplicationActivityContinuationDelegate)),
                       ];
     });
 
@@ -232,12 +238,33 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 }
 #endif
 
+#if JSIOS8SDK
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    [self.remoteNotificationsDelegate application:application didRegisterUserNotificationSettings:notificationSettings];
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(8_0)
+{
+    [self.remoteNotificationsDelegate application:application handleActionWithIdentifier:identifier forRemoteNotification:userInfo completionHandler:completionHandler];
+}
+
+#endif
+
 #pragma mark - JSApplicationLocalNotificationsDelegate
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
     [self.localNotificationsDelegate application:application didReceiveLocalNotification:notification];
 }
+
+#if JSIOS8SDK
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler
+{
+    [self.localNotificationsDelegate application:application handleActionWithIdentifier:identifier forLocalNotification:notification completionHandler:completionHandler];
+}
+#endif
+
 
 #pragma mark - JSApplicationStateRestorationDelegate
 
@@ -284,5 +311,52 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 {
     [self.protectedDataDelegate applicationProtectedDataDidBecomeAvailable:application];
 }
+
+#pragma mark - JSApplicationWatchInteractionDelegate
+
+#if JSIOS8_2SDK
+
+- (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void(^)(NSDictionary *replyInfo))reply
+{
+    [self.watchInteractionDelegate application:application handleWatchKitExtensionRequest:userInfo reply:reply];
+}
+
+#endif
+
+#pragma mark - JSApplicationExtensionDelegate
+
+#if JSIOS8SDK
+
+- (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier
+{
+    return [self.extensionDelegate application:application shouldAllowExtensionPointIdentifier:extensionPointIdentifier];
+}
+
+#endif
+
+#pragma mark - JSApplicationActivityContinuationDelegate
+
+#if JSIOS8SDK
+
+- (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType;
+{
+    return [self.activityContinuationDelegate application:application willContinueUserActivityWithType:userActivityType];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray *restorableObjects))restorationHandler;
+{
+    return [self.activityContinuationDelegate application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+}
+- (void)application:(UIApplication *)application didFailToContinueUserActivityWithType:(NSString *)userActivityType error:(NSError *)error
+{
+    [self.activityContinuationDelegate application:application didFailToContinueUserActivityWithType:userActivityType error:error];
+}
+
+- (void)application:(UIApplication *)application didUpdateUserActivity:(NSUserActivity *)userActivity
+{
+    [self.activityContinuationDelegate application:application didUpdateUserActivity:userActivity];
+}
+
+#endif
 
 @end

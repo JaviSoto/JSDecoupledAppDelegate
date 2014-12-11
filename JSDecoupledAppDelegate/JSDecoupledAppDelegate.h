@@ -8,6 +8,8 @@
 #import <UIKit/UIKit.h>
 
 #define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 70000)
+#define JSIOS8SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80000)
+#define JSIOS8_2SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80200)
 
 @protocol JSApplicationStateDelegate;
 @protocol JSApplicationDefaultOrientationDelegate;
@@ -17,6 +19,9 @@
 @protocol JSApplicationStateRestorationDelegate;
 @protocol JSApplicationURLResourceOpeningDelegate;
 @protocol JSApplicationProtectedDataDelegate;
+@protocol JSApplicationWatchInteractionDelegate;
+@protocol JSApplicationExtensionDelegate;
+@protocol JSApplicationActivityContinuationDelegate;
 
 @interface JSDecoupledAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -37,6 +42,9 @@
 @property (strong, nonatomic) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
 @property (strong, nonatomic) id<JSApplicationURLResourceOpeningDelegate> URLResourceOpeningDelegate;
 @property (strong, nonatomic) id<JSApplicationProtectedDataDelegate> protectedDataDelegate;
+@property (strong, nonatomic) id<JSApplicationWatchInteractionDelegate> watchInteractionDelegate;
+@property (strong, nonatomic) id<JSApplicationExtensionDelegate> extensionDelegate;
+@property (strong, nonatomic) id<JSApplicationActivityContinuationDelegate> activityContinuationDelegate;
 
 @end
 
@@ -78,11 +86,15 @@
 @optional
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
-
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 #if JSIOS7SDK
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
+#endif
+
+#if JSIOS8SDK
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings;
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(8_0);
 #endif
 
 @end
@@ -90,6 +102,10 @@
 @protocol JSApplicationLocalNotificationsDelegate <NSObject>
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification;
+
+#if JSIOS8SDK
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler;
+#endif
 
 @end
 
@@ -115,5 +131,30 @@
 @optional
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application;
 - (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application;
+
+@end
+
+@protocol JSApplicationWatchInteractionDelegate <NSObject>
+#if JSIOS8_2SDK
+@optional
+- (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void(^)(NSDictionary *replyInfo))reply;
+#endif
+@end
+
+@protocol JSApplicationExtensionDelegate <NSObject>
+#if JSIOS8SDK
+@optional
+- (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier;
+#endif
+@end
+
+@protocol JSApplicationActivityContinuationDelegate <NSObject>
+#if JSIOS8SDK
+@optional
+- (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType;
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray *restorableObjects))restorationHandler;
+- (void)application:(UIApplication *)application didFailToContinueUserActivityWithType:(NSString *)userActivityType error:(NSError *)error;
+- (void)application:(UIApplication *)application didUpdateUserActivity:(NSUserActivity *)userActivity;
+#endif
 
 @end

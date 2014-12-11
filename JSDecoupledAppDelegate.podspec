@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "JSDecoupledAppDelegate"
-  s.version      = "1.0.0"
+  s.version      = "1.1.0"
   s.summary      = "UIApplicationDelegate class that separates the different responsibilities into more more reusable classes."
   s.homepage     = "https://github.com/JaviSoto/JSDecoupledAppDelegate"
 
