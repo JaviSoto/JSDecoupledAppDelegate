@@ -7,9 +7,9 @@
 
 #import <UIKit/UIKit.h>
 
-#define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0)
-#define JSIOS8SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0)
-#define JSIOS8_2SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_2)
+#define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 70000)
+#define JSIOS8SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80000)
+#define JSIOS8_2SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80200)
 
 @protocol JSApplicationStateDelegate;
 @protocol JSApplicationDefaultOrientationDelegate;
