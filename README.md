@@ -20,6 +20,9 @@ The consequence of this is that all the code that we throw in it becomes essenti
 @protocol JSApplicationStateRestorationDelegate;
 @protocol JSApplicationURLResourceOpeningDelegate;
 @protocol JSApplicationProtectedDataDelegate;
+@protocol JSApplicationWatchInteractionDelegate;
+@protocol JSApplicationExtensionDelegate;
+@protocol JSApplicationActivityContinuationDelegate;
 ```
 
 `JSDecoupledAppDelegate` has one property for each of these protocols that you have to set with the object that conforms to it.
@@ -61,7 +64,7 @@ For more details on this, check the Sample Application in this repo.
 Just add this line to your `Podfile`:
 
 ```
-pod 'JSDecoupledAppDelegate', '~> 1.0.0'
+pod 'JSDecoupledAppDelegate', '~> 1.1.0'
 ```
 
 - Manually:
