@@ -63,7 +63,7 @@ For more details on this, check the Sample Application in this repo.
 
 Just add this line to your `Podfile`:
 
-```
+```ruby
 pod 'JSDecoupledAppDelegate', '~> 1.1.0'
 ```
 
