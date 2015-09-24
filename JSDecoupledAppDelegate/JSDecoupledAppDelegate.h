@@ -10,6 +10,7 @@
 #define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 70000)
 #define JSIOS8SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80000)
 #define JSIOS8_2SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80200)
+#define JSIOS9SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 90000)
 
 @protocol JSApplicationStateDelegate;
 @protocol JSApplicationDefaultOrientationDelegate;
@@ -18,6 +19,8 @@
 @protocol JSApplicationLocalNotificationsDelegate;
 @protocol JSApplicationStateRestorationDelegate;
 @protocol JSApplicationURLResourceOpeningDelegate;
+@protocol JSApplicationShortcutItemDelegate;
+@protocol JSApplicationHealthDelegate;
 @protocol JSApplicationProtectedDataDelegate;
 @protocol JSApplicationWatchInteractionDelegate;
 @protocol JSApplicationExtensionDelegate;
@@ -41,6 +44,8 @@
 @property (strong, nonatomic) id<JSApplicationLocalNotificationsDelegate> localNotificationsDelegate;
 @property (strong, nonatomic) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
 @property (strong, nonatomic) id<JSApplicationURLResourceOpeningDelegate> URLResourceOpeningDelegate;
+@property (strong, nonatomic) id<JSApplicationShortcutItemDelegate> shortcutItemDelegate;
+@property (strong, nonatomic) id<JSApplicationHealthDelegate> healthDelegate;
 @property (strong, nonatomic) id<JSApplicationProtectedDataDelegate> protectedDataDelegate;
 @property (strong, nonatomic) id<JSApplicationWatchInteractionDelegate> watchInteractionDelegate;
 @property (strong, nonatomic) id<JSApplicationExtensionDelegate> extensionDelegate;
@@ -97,6 +102,10 @@
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(8_0);
 #endif
 
+#if JSIOS9SDK
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler;
+#endif
+
 @end
 
 @protocol JSApplicationLocalNotificationsDelegate <NSObject>
@@ -105,6 +114,10 @@
 
 #if JSIOS8SDK
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler;
+#endif
+
+#if JSIOS9SDK
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler;
 #endif
 
 @end
@@ -123,6 +136,25 @@
 @protocol JSApplicationURLResourceOpeningDelegate <NSObject>
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+#if JSIOS9SDK
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options;
+#endif
+
+@end
+
+@protocol JSApplicationShortcutItemDelegate <NSObject>
+
+#if JSIOS9SDK
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler;
+#endif
+
+@end
+
+@protocol JSApplicationHealthDelegate <NSObject>
+
+#if JSIOS9SDK
+- (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application;
+#endif
 
 @end
 
