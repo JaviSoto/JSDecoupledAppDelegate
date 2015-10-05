@@ -49,6 +49,8 @@ static NSArray *JSApplicationDelegateProperties()
                        NSStringFromSelector(@selector(localNotificationsDelegate)),
                        NSStringFromSelector(@selector(stateRestorationDelegate)),
                        NSStringFromSelector(@selector(URLResourceOpeningDelegate)),
+                       NSStringFromSelector(@selector(shortcutItemDelegate)),
+                       NSStringFromSelector(@selector(healthDelegate)),
                        NSStringFromSelector(@selector(protectedDataDelegate)),
                        NSStringFromSelector(@selector(watchInteractionDelegate)),
                        NSStringFromSelector(@selector(extensionDelegate)),
