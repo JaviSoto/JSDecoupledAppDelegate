@@ -12,6 +12,16 @@
 #define JSIOS8_2SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80200)
 #define JSIOS9SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 90000)
 
+#if !__has_feature(nullability)
+    #define _Nonnull
+    #define _Nullable
+    #define nullable
+    #define NS_ASSUME_NONNULL_BEGIN
+    #define NS_ASSUME_NONNULL_END
+#endif
+
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol JSApplicationStateDelegate;
 @protocol JSApplicationDefaultOrientationDelegate;
 @protocol JSApplicationBackgroundFetchDelegate;
@@ -37,19 +47,19 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) id<JSApplicationStateDelegate> appStateDelegate;
-@property (strong, nonatomic) id<JSApplicationDefaultOrientationDelegate> appDefaultOrientationDelegate;
-@property (strong, nonatomic) id<JSApplicationBackgroundFetchDelegate> backgroundFetchDelegate;
-@property (strong, nonatomic) id<JSApplicationRemoteNotificationsDelegate> remoteNotificationsDelegate;
-@property (strong, nonatomic) id<JSApplicationLocalNotificationsDelegate> localNotificationsDelegate;
-@property (strong, nonatomic) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
-@property (strong, nonatomic) id<JSApplicationURLResourceOpeningDelegate> URLResourceOpeningDelegate;
-@property (strong, nonatomic) id<JSApplicationShortcutItemDelegate> shortcutItemDelegate;
-@property (strong, nonatomic) id<JSApplicationHealthDelegate> healthDelegate;
-@property (strong, nonatomic) id<JSApplicationProtectedDataDelegate> protectedDataDelegate;
-@property (strong, nonatomic) id<JSApplicationWatchInteractionDelegate> watchInteractionDelegate;
-@property (strong, nonatomic) id<JSApplicationExtensionDelegate> extensionDelegate;
-@property (strong, nonatomic) id<JSApplicationActivityContinuationDelegate> activityContinuationDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationStateDelegate> appStateDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationDefaultOrientationDelegate> appDefaultOrientationDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationBackgroundFetchDelegate> backgroundFetchDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationRemoteNotificationsDelegate> remoteNotificationsDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationLocalNotificationsDelegate> localNotificationsDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationStateRestorationDelegate> stateRestorationDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationURLResourceOpeningDelegate> URLResourceOpeningDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationShortcutItemDelegate> shortcutItemDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationHealthDelegate> healthDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationProtectedDataDelegate> protectedDataDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationWatchInteractionDelegate> watchInteractionDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationExtensionDelegate> extensionDelegate;
+@property (strong, nonatomic, nullable) id<JSApplicationActivityContinuationDelegate> activityContinuationDelegate;
 
 @end
 
@@ -58,8 +68,8 @@
 @protocol JSApplicationStateDelegate <NSObject>
 
 @optional
-- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions;
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions;
 
 // These events are also available in the form of NSNotifications.
 - (void)applicationWillResignActive:(UIApplication *)application;
@@ -74,7 +84,7 @@
 
 @protocol JSApplicationDefaultOrientationDelegate <NSObject>
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window;
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window;
 
 @end
 
@@ -99,11 +109,11 @@
 
 #if JSIOS8SDK
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings;
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(8_0);
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(8_0);
 #endif
 
 #if JSIOS9SDK
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler;
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(9_0);
 #endif
 
 @end
@@ -113,11 +123,11 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification;
 
 #if JSIOS8SDK
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler;
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler;
 #endif
 
 #if JSIOS9SDK
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler;
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(9_0);
 #endif
 
 @end
@@ -135,9 +145,9 @@
 
 @protocol JSApplicationURLResourceOpeningDelegate <NSObject>
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation;
 #if JSIOS9SDK
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options;
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options NS_AVAILABLE_IOS(9_0);
 #endif
 
 @end
@@ -145,7 +155,7 @@
 @protocol JSApplicationShortcutItemDelegate <NSObject>
 
 #if JSIOS9SDK
-- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler;
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler NS_AVAILABLE_IOS(9_0);
 #endif
 
 @end
@@ -153,7 +163,7 @@
 @protocol JSApplicationHealthDelegate <NSObject>
 
 #if JSIOS9SDK
-- (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application;
+- (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application NS_AVAILABLE_IOS(9_0);
 #endif
 
 @end
@@ -169,24 +179,26 @@
 @protocol JSApplicationWatchInteractionDelegate <NSObject>
 #if JSIOS8_2SDK
 @optional
-- (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void(^)(NSDictionary *replyInfo))reply;
+- (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(nullable NSDictionary *)userInfo reply:(void(^)( NSDictionary * _Nullable replyInfo))reply;
 #endif
 @end
 
 @protocol JSApplicationExtensionDelegate <NSObject>
 #if JSIOS8SDK
 @optional
-- (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier;
+- (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier NS_AVAILABLE_IOS(8_0);
 #endif
 @end
 
 @protocol JSApplicationActivityContinuationDelegate <NSObject>
 #if JSIOS8SDK
 @optional
-- (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType;
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray *restorableObjects))restorationHandler;
-- (void)application:(UIApplication *)application didFailToContinueUserActivityWithType:(NSString *)userActivityType error:(NSError *)error;
-- (void)application:(UIApplication *)application didUpdateUserActivity:(NSUserActivity *)userActivity;
+- (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType NS_AVAILABLE_IOS(8_0);
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray * _Nullable restorableObjects))restorationHandler NS_AVAILABLE_IOS(8_0);
+- (void)application:(UIApplication *)application didFailToContinueUserActivityWithType:(NSString *)userActivityType error:(NSError *)error NS_AVAILABLE_IOS(8_0);
+- (void)application:(UIApplication *)application didUpdateUserActivity:(NSUserActivity *)userActivity NS_AVAILABLE_IOS(8_0);
 #endif
 
 @end
+
+NS_ASSUME_NONNULL_END
