@@ -19,6 +19,8 @@ The consequence of this is that all the code that we throw in it becomes essenti
 @protocol JSApplicationLocalNotificationsDelegate;
 @protocol JSApplicationStateRestorationDelegate;
 @protocol JSApplicationURLResourceOpeningDelegate;
+@protocol JSApplicationShortcutItemDelegate;
+@protocol JSApplicationHealthDelegate;
 @protocol JSApplicationProtectedDataDelegate;
 @protocol JSApplicationWatchInteractionDelegate;
 @protocol JSApplicationExtensionDelegate;
