@@ -87,6 +87,8 @@ static NSArray *JSApplicationDelegateSubprotocols()
     return protocols;
 }
 
+static id NewDelegateForProtocolFromDictionary(Protocol *protocol, NSDictionary *dictionary) NS_RETURNS_RETAINED;
+
 @implementation JSDecoupledAppDelegate
 
 #pragma mark - Method Proxying
@@ -156,8 +158,43 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     }
     else
     {
-        return [super init];
+		NSString *fileName = @"ApplicationDelegateConfiguration";
+		NSURL *plistURL = [[NSBundle mainBundle] URLForResource:fileName withExtension:@"plist"];
+		if (!plistURL)
+			[NSException raise:JSInvalidConfigurationException format:@"Main bundle must contain a plist named “%@”!", fileName];
+
+		NSDictionary *classNamesByProtocolNames = [NSDictionary dictionaryWithContentsOfURL:plistURL];
+		if (!classNamesByProtocolNames)
+			[NSException raise:JSInvalidConfigurationException format:@"Plist “%@” did not contain a valid configuration dictionary!", fileName];
+
+        return [self initWithDelegateMap:classNamesByProtocolNames];
     }
+}
+
+#define _protocolInstance(protocolName) \
+	NewDelegateForProtocolFromDictionary(@protocol(protocolName), classNamesByProtocolNames)
+- (id)initWithDelegateMap:(NSDictionary *)classNamesByProtocolNames
+{
+	NSArray *validKeys = JSApplicationDelegateSubprotocols();
+	[classNamesByProtocolNames enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+		if (![key isKindOfClass:[NSString class]]
+			|| ![value isKindOfClass:[NSString class]])
+			[NSException raise:JSInvalidConfigurationException format:@"The key/value pairs must be pairs of strings! %p, howver contained the pair %@, %@.", classNamesByProtocolNames, key, value];
+
+		if (![validKeys containsObject:key])
+			[NSException raise:JSInvalidConfigurationException format:@"The key “%@” is invalid!\nThe allowed values are: “%@”", key, [validKeys componentsJoinedByString:@"”, “"]];
+	}];
+	if (!(self = [super init])) return nil;
+
+	_appStateDelegate = _protocolInstance(JSApplicationStateDelegate);
+	_appDefaultOrientationDelegate = _protocolInstance(JSApplicationDefaultOrientationDelegate);
+	_backgroundFetchDelegate = _protocolInstance(JSApplicationBackgroundFetchDelegate);
+	_remoteNotificationsDelegate = _protocolInstance(JSApplicationRemoteNotificationsDelegate);
+	_localNotificationsDelegate = _protocolInstance(JSApplicationLocalNotificationsDelegate);
+	_stateRestorationDelegate = _protocolInstance(JSApplicationStateRestorationDelegate);
+	_protectedDataDelegate = _protocolInstance(JSApplicationProtectedDataDelegate);
+
+	return self;
 }
 
 #pragma mark - JSApplicationStateDelegate
@@ -405,3 +442,19 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 #endif
 
 @end
+
+static id NewDelegateForProtocolFromDictionary(Protocol *protocol, NSDictionary *dictionary)
+{
+	NSString *protocolName = NSStringFromProtocol(protocol);
+	NSString *className = [dictionary objectForKey:protocolName];
+	if (!className)
+		return nil;
+
+	Class delegateClass = NSClassFromString(className);
+	if (!class_conformsToProtocol(delegateClass, protocol))
+		[NSException raise:JSInvalidConfigurationException format:@"Delegate class named “%@” does not conform to protocol %@!", delegateClass, protocolName];
+
+	return [delegateClass new];
+}
+
+NSString * const JSInvalidConfigurationException = @"JSInvalidConfigurationException";

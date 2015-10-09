@@ -10,11 +10,6 @@
 
 @implementation JSApplicationStateDelegate
 
-+ (void)load
-{
-    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = [[self alloc] init];
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     return YES;
