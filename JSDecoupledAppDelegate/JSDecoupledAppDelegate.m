@@ -315,15 +315,20 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationURLResourceOpeningDelegate
 
+#if IOS9
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+{
+    return [self.URLResourceOpeningDelegate application:app openURL:url options:options];
+}
+#elif IOS8
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     return [self.URLResourceOpeningDelegate application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
 }
-
-#if JSIOS9SDK
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+#else
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    return [self.URLResourceOpeningDelegate application:app openURL:url options:options];
+    return [self.URLResourceOpeningDelegate application:application handleOpenURL:url];
 }
 #endif
 
