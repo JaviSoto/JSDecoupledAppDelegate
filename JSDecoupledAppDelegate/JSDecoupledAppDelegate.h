@@ -145,9 +145,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JSApplicationURLResourceOpeningDelegate <NSObject>
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation;
 #if JSIOS9SDK
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options NS_AVAILABLE_IOS(9_0);
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options;
+#elif JSIOS8SDK
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation;
+#else
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url;
 #endif
 
 @end
