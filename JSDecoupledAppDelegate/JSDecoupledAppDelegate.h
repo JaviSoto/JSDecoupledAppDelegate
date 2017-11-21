@@ -11,6 +11,7 @@
 #define JSIOS8SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80000)
 #define JSIOS8_2SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80200)
 #define JSIOS9SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 90000)
+#define JSIOS10SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
 
 #if !__has_feature(nullability)
     #define _Nonnull
@@ -107,7 +108,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
 #endif
 
-#if JSIOS8SDK
+#if JSIOS10SDK
+#elif JSIOS8SDK
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings;
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(8_0);
 #endif
@@ -120,13 +122,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JSApplicationLocalNotificationsDelegate <NSObject>
 
+#if JSIOS10SDK
+#elif JSIOS8SDK
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification;
-
-#if JSIOS8SDK
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler;
 #endif
 
-#if JSIOS9SDK
+#if JSIOS10SDK
+#elif JSIOS9SDK
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(9_0);
 #endif
 

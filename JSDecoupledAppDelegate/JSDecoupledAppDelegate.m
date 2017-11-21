@@ -242,7 +242,8 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 }
 #endif
 
-#if JSIOS8SDK
+#if JSIOS10SDK
+#elif JSIOS8SDK
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     [self.remoteNotificationsDelegate application:application didRegisterUserNotificationSettings:notificationSettings];
@@ -265,24 +266,29 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationLocalNotificationsDelegate
 
+#if JSIOS10SDK
+#elif JSIOS8SDK
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
     [self.localNotificationsDelegate application:application didReceiveLocalNotification:notification];
 }
+#endif
 
-#if JSIOS8SDK
+
+#if JSIOS10SDK
+#elif JSIOS8SDK
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler
 {
     [self.localNotificationsDelegate application:application handleActionWithIdentifier:identifier forLocalNotification:notification completionHandler:completionHandler];
 }
+#endif
 
-#if JSIOS9SDK
+#if JSIOS10SDK
+#elif JSIOS9SDK
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler
 {
     [self.localNotificationsDelegate application:application handleActionWithIdentifier:identifier forLocalNotification:notification withResponseInfo:responseInfo completionHandler:completionHandler];
 }
-#endif
-
 #endif
 
 
