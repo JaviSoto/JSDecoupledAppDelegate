@@ -211,7 +211,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationBackgroundFetchDelegate
 
-#if JSIOS7SDK
+#if JSSDKAtLeastIOS7
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
 {
     [self.backgroundFetchDelegate application:application performFetchWithCompletionHandler:completionHandler];
@@ -235,15 +235,14 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo];
 }
 
-#if JSIOS7SDK
+#if JSSDKAtLeastIOS7
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
 {
     [self.remoteNotificationsDelegate application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
 #endif
 
-#if JSIOS10SDK
-#elif JSIOS8SDK
+#if JSSDKAtLeastIOS10 && ! JSSDKAtLeastIOS8
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
     [self.remoteNotificationsDelegate application:application didRegisterUserNotificationSettings:notificationSettings];
@@ -254,7 +253,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
     [self.remoteNotificationsDelegate application:application handleActionWithIdentifier:identifier forRemoteNotification:userInfo completionHandler:completionHandler];
 }
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler
 {
     [self.remoteNotificationsDelegate application:application handleActionWithIdentifier:identifier forRemoteNotification:userInfo withResponseInfo:responseInfo completionHandler:completionHandler];
@@ -266,8 +265,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationLocalNotificationsDelegate
 
-#if JSIOS10SDK
-#elif JSIOS8SDK
+#if JSSDKAtLeastIOS10 && ! JSSDKAtLeastIOS8
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
     [self.localNotificationsDelegate application:application didReceiveLocalNotification:notification];
@@ -275,16 +273,14 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 #endif
 
 
-#if JSIOS10SDK
-#elif JSIOS8SDK
+#if JSSDKAtLeastIOS10 && ! JSSDKAtLeastIOS8
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler
 {
     [self.localNotificationsDelegate application:application handleActionWithIdentifier:identifier forLocalNotification:notification completionHandler:completionHandler];
 }
 #endif
 
-#if JSIOS10SDK
-#elif JSIOS9SDK
+#if JSSDKAtLeastIOS10 && ! JSSDKAtLeastIOS9
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler
 {
     [self.localNotificationsDelegate application:application handleActionWithIdentifier:identifier forLocalNotification:notification withResponseInfo:responseInfo completionHandler:completionHandler];
@@ -321,12 +317,12 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationURLResourceOpeningDelegate
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
 {
     return [self.URLResourceOpeningDelegate application:app openURL:url options:options];
 }
-#elif JSIOS8SDK
+#elif JSSDKAtLeastIOS8
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     return [self.URLResourceOpeningDelegate application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
@@ -340,7 +336,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationShortcutItemDelegate
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler
 {
 	return [self.shortcutItemDelegate application:application performActionForShortcutItem:shortcutItem completionHandler:completionHandler];
@@ -349,7 +345,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationHealthDelegate
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application
 {
 	return [self.healthDelegate applicationShouldRequestHealthAuthorization:application];
@@ -370,7 +366,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationWatchInteractionDelegate
 
-#if JSIOS8_2SDK
+#if JSSDKAtLeastIOS8_2
 
 - (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void(^)(NSDictionary *replyInfo))reply
 {
@@ -381,7 +377,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationExtensionDelegate
 
-#if JSIOS8SDK
+#if JSSDKAtLeastIOS8
 
 - (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier
 {
@@ -392,7 +388,7 @@ static JSDecoupledAppDelegate *sharedAppDelegate = nil;
 
 #pragma mark - JSApplicationActivityContinuationDelegate
 
-#if JSIOS8SDK
+#if JSSDKAtLeastIOS8
 
 - (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType;
 {

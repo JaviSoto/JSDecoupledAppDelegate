@@ -7,12 +7,11 @@
 
 #import <UIKit/UIKit.h>
 
-#define JSIOS7SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 70000)
-#define JSIOS8SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80000)
-#define JSIOS8_2SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80200)
-#define JSIOS9SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 90000)
-#define JSIOS10SDK (__IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
-
+#define JSSDKAtLeastIOS7 (__IPHONE_OS_VERSION_MAX_ALLOWED >= 70000)
+#define JSSDKAtLeastIOS8 (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80000)
+#define JSSDKAtLeastIOS8_2 (__IPHONE_OS_VERSION_MAX_ALLOWED >= 80200)
+#define JSSDKAtLeastIOS9 (__IPHONE_OS_VERSION_MAX_ALLOWED >= 90000)
+#define JSSDKAtLeastIOS10 (__IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
 #if !__has_feature(nullability)
     #define _Nonnull
     #define _Nullable
@@ -91,7 +90,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JSApplicationBackgroundFetchDelegate <NSObject>
 
-#if JSIOS7SDK
+
+#if JSSDKAtLeastIOS7
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
 #endif
 
@@ -104,17 +104,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
-#if JSIOS7SDK
+#if JSSDKAtLeastIOS7
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler;
 #endif
 
-#if JSIOS10SDK
-#elif JSIOS8SDK
+#if JSSDKAtLeastIOS10 && ! JSSDKAtLeastIOS8
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings;
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(8_0);
 #endif
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(9_0);
 #endif
 
@@ -122,14 +121,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JSApplicationLocalNotificationsDelegate <NSObject>
 
-#if JSIOS10SDK
-#elif JSIOS8SDK
+#if JSSDKAtLeastIOS10 && ! JSSDKAtLeastIOS8
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification;
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler;
 #endif
 
-#if JSIOS10SDK
-#elif JSIOS9SDK
+#if JSSDKAtLeastIOS10 && ! JSSDKAtLeastIOS9
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void(^)())completionHandler NS_AVAILABLE_IOS(9_0);
 #endif
 
@@ -148,9 +145,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JSApplicationURLResourceOpeningDelegate <NSObject>
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options;
-#elif JSIOS8SDK
+#elif JSSDKAtLeastIOS8
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation;
 #else
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url;
@@ -160,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JSApplicationShortcutItemDelegate <NSObject>
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler NS_AVAILABLE_IOS(9_0);
 #endif
 
@@ -168,7 +165,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JSApplicationHealthDelegate <NSObject>
 
-#if JSIOS9SDK
+#if JSSDKAtLeastIOS9
 - (void)applicationShouldRequestHealthAuthorization:(UIApplication *)application NS_AVAILABLE_IOS(9_0);
 #endif
 
@@ -183,21 +180,21 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol JSApplicationWatchInteractionDelegate <NSObject>
-#if JSIOS8_2SDK
+#if JSSDKAtLeastIOS8_2
 @optional
 - (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(nullable NSDictionary *)userInfo reply:(void(^)( NSDictionary * _Nullable replyInfo))reply;
 #endif
 @end
 
 @protocol JSApplicationExtensionDelegate <NSObject>
-#if JSIOS8SDK
+#if JSSDKAtLeastIOS8
 @optional
 - (BOOL)application:(UIApplication *)application shouldAllowExtensionPointIdentifier:(NSString *)extensionPointIdentifier NS_AVAILABLE_IOS(8_0);
 #endif
 @end
 
 @protocol JSApplicationActivityContinuationDelegate <NSObject>
-#if JSIOS8SDK
+#if JSSDKAtLeastIOS8
 @optional
 - (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType NS_AVAILABLE_IOS(8_0);
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray * _Nullable restorableObjects))restorationHandler NS_AVAILABLE_IOS(8_0);
